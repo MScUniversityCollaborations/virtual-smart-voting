@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
-library VoterValues {
+library CandidateValues {
     
-     struct VoterInfo{
+     struct Candidate{
         uint id;
-        uint voterNumber;
+        uint votes;
         string electionCenter;
-        bool isEnrolledInCenter;
-        bool isVoted;
 
     }
 }
