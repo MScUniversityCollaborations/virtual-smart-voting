@@ -1,1 +1,1 @@
-// Voter File
+// Voter
