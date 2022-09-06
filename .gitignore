@@ -1,1 +1,2 @@
-artifacts
+# Ignore folder
+/artifacts/build-info
