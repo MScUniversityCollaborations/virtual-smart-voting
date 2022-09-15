@@ -6,5 +6,6 @@ import "../libraries/Candidates.sol";
 contract Ballot{
 
     //Candidate[] Candidate = public ;
+    //another comment
     
 }
