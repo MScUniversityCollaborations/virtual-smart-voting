@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
-library Voters {
-    
+library Structs {
+
+    struct Candidate {
+        uint id;
+        uint votes;
+        string electionCenter;
+    }
+
     struct Voter{
         uint id;
         uint voterNumber;
