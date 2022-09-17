@@ -1,3 +1,4 @@
 # Ignore folder
 artifacts
 .deps
+.learneth
