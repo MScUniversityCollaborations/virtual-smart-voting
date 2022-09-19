@@ -5,8 +5,10 @@ library Structs {
 
     struct Candidate {
         uint id;
+        string electionCenterName;
         uint votes;
-        string electionCenter;
+        uint[] votersArray;
+      
     }
 
     struct Voter{
