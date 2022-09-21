@@ -37,6 +37,30 @@ contract Ballot {
         bool hasVoted;
     }
 
+    address[] votersAddress;
+
+    // // Adds one address to the storage addresses array 
+    // function getAddressFromGanache(address addr) public {
+    //     votersAddress.push(addr);
+    // }
+
+    // Replaces the storage addresses with this new array of addresses
+    function addAddresses(address[] calldata _addresses) public {
+        votersAddress = _addresses;
+    }
+
+    // Does something on the storage array of addresses
+    function operateOnStorageArrayOfAddresses() public view returns(address[] memory){
+        // Makes a copy of the storage address in memory to save gas
+        address[] memory addressesCopy = votersAddress;
+        // for(uint256 i = 0; i < addressesCopy.length; i++) {
+        //     address addr = addressesCopy[i];
+        //     // do something with addr
+
+        // }
+        return addressesCopy;
+    }
+
 
 
     // Election centers code block
@@ -73,11 +97,11 @@ contract Ballot {
                 );
     }
      
-    function getWelcomeString() private view returns (string memory){
+    function getWelcomeString() public view returns (string memory){
         return welcome;
     }
 
-    function getCandidates() private pure returns (
+    function getCandidates() public pure returns (
         string memory,string memory,
         string memory,string memory,
         string memory){
@@ -87,7 +111,7 @@ contract Ballot {
                 Constants.CANDIDATE5);
     }
     
-    function getCenters() private pure returns (
+    function getCenters() public pure returns (
         string memory,string memory,
         string memory,string memory,
         string memory,string memory,
