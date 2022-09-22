@@ -11,18 +11,18 @@ contract Ballot {
         string electionCenterName;
         uint votes;
         uint[] votersArray;
-      
     }
 
     string private welcome;
     uint private candidateID;
     uint private idVoter;
+    uint randNonce = 0;
 
     constructor(){ 
         welcome = "Welcome to smart voting ";
     }
 
-
+   // Voter code block
     struct Voter { 
         uint id;
         address voterAddress;
@@ -31,7 +31,7 @@ contract Ballot {
         bool hasVoted;
     }
 
-     mapping(address=>Voter) voterStruct;
+    mapping(address=>Voter) voterStruct;
 
     function addVoter(address _voterAddress, uint _id) private {
         voterStruct[_voterAddress].voterAddress = _voterAddress;
@@ -58,47 +58,43 @@ contract Ballot {
     }
 
     // Does something on the storage array of addresses
-    function operateOnStorageArrayOfAddresses() public returns(address[] memory){
+    function operateOnStorageArrayOfAddresses() public{
         // Makes a copy of the storage address in memory to save gas
         address[] memory addressesCopy = votersAddress;
         for(uint256 i = 0; i < addressesCopy.length; i++) {
+
             idVoter += 1;
             address addr = addressesCopy[i];
             addVoter(addr, idVoter);
 
-
-            //uint randNumber = randMod();
+            randNonce++;
+            uint randNumber = uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100;
             
-            // if( 0 >= randNumber && 1 <= randNumber) { 
-
-                
-            // } else if( 2 >= randNumber &&  3 <= randNumber ){
-               
-
-            // } else if( 4 >= randNumber &&  5 <= randNumber ){
-               
-
-            // } else if( 6 >= randNumber &&  7 <= randNumber ){
-               
-
-            // } else if( 8 >= randNumber &&  9 <= randNumber){
-
-               
-            // } else {
-               
-            // } 
- 
-
+            if( 10 >= randNumber && 20 <= randNumber) { 
+                voterStruct[addr].electionCenter = 1;
+                voterStruct[addr].isEnrolledInCenter = true;
+            } else if( 15 >= randNumber &&  25 <= randNumber ){
+                voterStruct[addr].electionCenter = 1;
+                voterStruct[addr].isEnrolledInCenter = true;
+            } else if( 30 >= randNumber &&  45 <= randNumber ){
+                voterStruct[addr].electionCenter = 1;
+                voterStruct[addr].isEnrolledInCenter = true;
+            } else if( 55 >= randNumber &&  75 <= randNumber ){
+                voterStruct[addr].electionCenter = 1;
+                voterStruct[addr].isEnrolledInCenter = true;
+            } else if( 78 >= randNumber &&  95 <= randNumber){
+                voterStruct[addr].electionCenter = 1;
+                voterStruct[addr].isEnrolledInCenter = true;
+            } else {
+                voterStruct[addr].isEnrolledInCenter = false;
+            } 
         }
-        return addressesCopy;
     }
 
     function getVoter(address _voterAddress) external view returns(uint, address) {
         return (voterStruct[_voterAddress].id, 
                 voterStruct[_voterAddress].voterAddress);
     }
-
-
 
     // Election centers code block
     struct ElectionCenter {
@@ -195,16 +191,16 @@ contract Ballot {
         return string(bstr);
     }
 
-    // Initializing the state variable
-    uint randNonce = 0;
+//     // Initializing the state variable
+//     uint randNonce = 0;
     
-    // Defining a function to generate a random number
-    function randMod() public
-    returns(uint, string memory) {
-        // increase nonce
-        randNonce++; 
-    return (uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100, "Hi random number" );
-    }
+//     // Defining a function to generate a random number
+//     function randMod() public
+//     returns(uint, string memory) {
+//         // increase nonce
+//         randNonce++; 
+//     return (uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100, "Hi random number" );
+//     }
 
-    //------ End code fo Utils ------\\
+//     //------ End code fo Utils ------\\
 }
