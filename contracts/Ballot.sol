@@ -16,25 +16,26 @@ contract Ballot {
 
     string private welcome;
     uint private candidateID;
+    uint public idVoter;
 
     constructor(){ 
         welcome = "Welcome to smart voting ";
     }
 
-    function setCenters(
-    ) public {
-        for (uint i = 1; i <= 5; i++) {
-                addCenter(i,0);
-        }
-    }
 
     struct Voter { 
         uint id;
-
-        uint voterNumber;
-        string electionCenter;
+        address voterAddress;
+        uint electionCenter;
         bool isEnrolledInCenter;
         bool hasVoted;
+    }
+
+     mapping(address=>Voter) voterStruct;
+
+    function addVoter(address _voterAddress, uint _id) private {
+        voterStruct[_voterAddress].voterAddress = _voterAddress;
+        voterStruct[_voterAddress].id = _id;
     }
 
     address[] votersAddress;
@@ -49,17 +50,59 @@ contract Ballot {
         votersAddress = _addresses;
     }
 
+    function ruternAddresses() public view returns(address[] memory){
+        // Makes a copy of the storage address in memory to save gas
+        address[] memory votersAddresses = votersAddress;
+
+        return votersAddresses;
+    }
+
     // Does something on the storage array of addresses
-    function operateOnStorageArrayOfAddresses() public view returns(address[] memory){
+    function operateOnStorageArrayOfAddresses() public returns(address[] memory){
         // Makes a copy of the storage address in memory to save gas
         address[] memory addressesCopy = votersAddress;
-        // for(uint256 i = 0; i < addressesCopy.length; i++) {
-        //     address addr = addressesCopy[i];
-        //     // do something with addr
+        for(uint256 i = 0; i < addressesCopy.length; i++) {
+            idVoter += 1;
+            address addr = addressesCopy[i];
+            addVoter(addr, idVoter);
 
-        // }
+
+            //uint randNumber = randMod();
+            
+            // if( 0 >= randNumber && 1 <= randNumber) { 
+
+                
+            // } else if( 2 >= randNumber &&  3 <= randNumber ){
+               
+
+            // } else if( 4 >= randNumber &&  5 <= randNumber ){
+               
+
+            // } else if( 6 >= randNumber &&  7 <= randNumber ){
+               
+
+            // } else if( 8 >= randNumber &&  9 <= randNumber){
+
+               
+            // } else {
+               
+            // } 
+ 
+
+        }
         return addressesCopy;
     }
+
+    function getVoter(address _voterAddress) external view returns(uint, address) {
+        return (voterStruct[_voterAddress].id, 
+                voterStruct[_voterAddress].voterAddress);
+    }
+
+
+
+
+
+
 
 
 
@@ -72,6 +115,13 @@ contract Ballot {
     }
 
     mapping(uint=>ElectionCenter) centerStruct;
+
+    function setCenters(
+    ) public {
+        for (uint i = 1; i <= 5; i++) {
+                addCenter(i,0);
+        }
+    }
 
     function addCenter(uint _id, uint _voters) private {
         centerStruct[_id].id = _id;
@@ -97,6 +147,9 @@ contract Ballot {
                 );
     }
      
+    //------ End code fo Centers ------\\
+
+    // Info from UI-WEB 
     function getWelcomeString() public view returns (string memory){
         return welcome;
     }
@@ -147,4 +200,17 @@ contract Ballot {
         }
         return string(bstr);
     }
+
+    // Initializing the state variable
+    uint randNonce = 0;
+    
+    // Defining a function to generate a random number
+    function randMod() public
+    returns(uint) {
+        // increase nonce
+        randNonce++; 
+    return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 10 ;
+    }
+
+    //------ End code fo Utils ------\\
 }
