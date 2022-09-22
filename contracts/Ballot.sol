@@ -16,7 +16,7 @@ contract Ballot {
 
     string private welcome;
     uint private candidateID;
-    uint public idVoter;
+    uint private idVoter;
 
     constructor(){ 
         welcome = "Welcome to smart voting ";
@@ -97,12 +97,6 @@ contract Ballot {
         return (voterStruct[_voterAddress].id, 
                 voterStruct[_voterAddress].voterAddress);
     }
-
-
-
-
-
-
 
 
 
@@ -206,10 +200,10 @@ contract Ballot {
     
     // Defining a function to generate a random number
     function randMod() public
-    returns(uint) {
+    returns(uint, string memory) {
         // increase nonce
         randNonce++; 
-    return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 10 ;
+    return (uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100, "Hi random number" );
     }
 
     //------ End code fo Utils ------\\
