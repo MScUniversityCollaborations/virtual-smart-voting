@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.9 <0.9.0;
 
+// import "hardhat/console.sol";
 import "../libraries/Constants.sol";
 
 
@@ -21,6 +22,7 @@ contract Ballot {
     constructor(){ 
         welcome = "Welcome to smart voting ";
         idVoter = 1000;
+        addVotesToCenter6();
     }
 
    // Voter code block
@@ -28,15 +30,18 @@ contract Ballot {
         uint id;
         address voterAddress;
         uint electionCenter;
-        bool isEnrolledInCenter;
+        bool isEnrolledInCenter ;
         bool hasVoted;
     }
 
     mapping(address=>Voter) voterStruct;
 
-    function addVoter(address _voterAddress, uint _id) private {
+    function addVoter(address _voterAddress, uint _id, uint _electionCenter, bool _isEnrolledInCenter, bool _hasVoted) private {
         voterStruct[_voterAddress].voterAddress = _voterAddress;
         voterStruct[_voterAddress].id = _id;
+        voterStruct[_voterAddress].electionCenter = _electionCenter;
+        voterStruct[_voterAddress].isEnrolledInCenter = _isEnrolledInCenter;
+        voterStruct[_voterAddress].hasVoted = _hasVoted;
     }
 
     address[] votersAddress;
@@ -58,39 +63,107 @@ contract Ballot {
         return votersAddresses;
     }
 
+    // function ruternVoternsEnrollered() public   
+    // returns(address[] memory){
+    
+    //     address[] memory addressesCopy2 = votersAddress;
+    //     address[] memory addressesTRUEvoters ;
+    //     for(uint256 i = 0; i < addressesCopy2.length; i++) {
+    //             address addr2 = addressesCopy2[i];
+    //             if(voterStruct[addr2].isEnrolledInCenter = true){
+    //                 addressesTRUEvoters[i] = addr2;
+    //             }
+    //     }
+    //     return (addressesTRUEvoters);
+
+    // }
+
     // Does something on the storage array of addresses
-    function operateOnStorageArrayOfAddresses() public{
+    function operateOnStorageArrayOfAddresses()  public {
         // Makes a copy of the storage address in memory to save gas
         address[] memory addressesCopy = votersAddress;
-        for(uint256 i = 0; i < addressesCopy.length; i++) {
+        uint randNumber;
+        for(uint256 i = 0; i <= 20; i++) {
 
             idVoter += 1;
             address addr = addressesCopy[i];
-            addVoter(addr, idVoter);
+            addVoter(addr, idVoter, 1, true, false);
 
-            randNonce++;
-            uint randNumber = uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100;
-            
-            if( 10 >= randNumber && 20 <= randNumber) { 
-                voterStruct[addr].electionCenter = 1;
-                voterStruct[addr].isEnrolledInCenter = true;
-            } else if( 15 >= randNumber &&  25 <= randNumber ){
-                voterStruct[addr].electionCenter = 1;
-                voterStruct[addr].isEnrolledInCenter = true;
-            } else if( 30 >= randNumber &&  45 <= randNumber ){
-                voterStruct[addr].electionCenter = 1;
-                voterStruct[addr].isEnrolledInCenter = true;
-            } else if( 55 >= randNumber &&  75 <= randNumber ){
-                voterStruct[addr].electionCenter = 1;
-                voterStruct[addr].isEnrolledInCenter = true;
-            } else if( 78 >= randNumber &&  95 <= randNumber){
-                voterStruct[addr].electionCenter = 1;
-                voterStruct[addr].isEnrolledInCenter = true;
-            } else {
-                voterStruct[addr].isEnrolledInCenter = false;
-            } 
+            // randNonce++;
+            // randNumber = uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100;
+
+            // if( 1 >= randNumber && 20 <= randNumber) { 
+            //      addVoter(addr, idVoter, 1, true, false);
+            // } else if( 21 >= randNumber &&  34 <= randNumber ){
+            //       addVoter(addr, idVoter, 2, true, false);
+            // } else if( 36 >= randNumber &&  47 <= randNumber ){
+            //       addVoter(addr, idVoter, 3, true, false);
+            // } else if( 55 >= randNumber &&  75 <= randNumber ){
+            //        addVoter(addr, idVoter, 4, true, false);
+            // } else if( 78 >= randNumber &&  95 <= randNumber){
+            //       addVoter(addr, idVoter, 5, true, false);
+            // } else {
+            //        addVoter(addr, idVoter, 0, false, false);
+            // } 
         }
     }
+
+    function addVotesToCenter2()  public{
+        // Makes a copy of the storage address in memory to save gas
+        address[] memory addressesCopy = votersAddress;
+        for(uint256 i = 21; i <= 40; i++) {
+            idVoter += 1;
+            address addr = addressesCopy[i];
+            addVoter(addr, idVoter, 2, true, false);
+        }
+    }
+
+
+    function addVotesToCenter3()  public{
+        // Makes a copy of the storage address in memory to save gas
+        address[] memory addressesCopy = votersAddress;
+        for(uint256 i = 41; i <= 60; i++) {
+            idVoter += 1;
+            address addr = addressesCopy[i];
+            addVoter(addr, idVoter, 2, true, false);
+        }
+    }
+
+    function addVotesToCenter4()  public {
+        // Makes a copy of the storage address in memory to save gas
+        address[] memory addressesCopy = votersAddress;
+        for(uint256 i = 61; i <= 70; i++) {
+            idVoter += 1;
+            address addr = addressesCopy[i];
+            addVoter(addr, idVoter, 4, true, false);
+        }
+    }
+
+    function addVotesToCenter5()  public{
+        // Makes a copy of the storage address in memory to save gas
+        address[] memory addressesCopy = votersAddress;
+        for(uint256 i = 71; i <= 80; i++) {
+            idVoter += 1;
+            address addr = addressesCopy[i];
+            addVoter(addr, idVoter, 5, true, false);
+        }
+
+
+    }
+
+     function addVotesToCenter6() internal {
+        // Makes a copy of the storage address in memory to save gas
+        address[] memory addressesCopy = votersAddress;
+        for(uint256 i = 81; i <= 100; i++) {
+            idVoter += 1;
+            address addr = addressesCopy[i];
+            addVoter(addr, idVoter, 0, false, false);
+        }
+
+
+    }
+
+
 
     function getVoter(address _voterAddress) external view 
     returns(uint Id, address Address, uint electionCenter, bool isEnrolledInCenter, bool hasVoted) {
@@ -196,16 +269,16 @@ contract Ballot {
         return string(bstr);
     }
 
-//     // Initializing the state variable
-//     uint randNonce = 0;
+    // // Initializing the state variable
+    // uint randNonce2 = 0;
     
-//     // Defining a function to generate a random number
-//     function randMod() public
-//     returns(uint, string memory) {
-//         // increase nonce
-//         randNonce++; 
-//     return (uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100, "Hi random number" );
-//     }
+    // // Defining a function to generate a random number
+    // function randMod() public
+    // returns(uint, string memory) {
+    //     // increase nonce
+    //     randNonce2++; 
+    // return (uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce2))) % 100, "Hi random number" );
+    // }
 
 //     //------ End code fo Utils ------\\
 }
