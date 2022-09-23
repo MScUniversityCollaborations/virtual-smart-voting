@@ -20,6 +20,7 @@ contract Ballot {
 
     constructor(){ 
         welcome = "Welcome to smart voting ";
+        idVoter = 1000;
     }
 
    // Voter code block
@@ -91,9 +92,13 @@ contract Ballot {
         }
     }
 
-    function getVoter(address _voterAddress) external view returns(uint, address) {
+    function getVoter(address _voterAddress) external view 
+    returns(uint Id, address Address, uint electionCenter, bool isEnrolledInCenter, bool hasVoted) {
         return (voterStruct[_voterAddress].id, 
-                voterStruct[_voterAddress].voterAddress);
+                voterStruct[_voterAddress].voterAddress,
+                voterStruct[_voterAddress].electionCenter,
+                voterStruct[_voterAddress].isEnrolledInCenter,
+                voterStruct[_voterAddress].hasVoted );
     }
 
     // Election centers code block
@@ -124,10 +129,10 @@ contract Ballot {
                 centerStruct[_id].voters);
     }
 
-    function addVotersToCenter(address _address, uint _id) private{
+    function addVotersToCenter(address _voterAddress, uint _id) private{
         centerStruct[_id].id = _id;
         centerStruct[_id].voters = centerStruct[_id].voters + 1;
-        centerStruct[_id].votersArray.push(_address);
+        centerStruct[_id].votersArray.push(_voterAddress);
     }
 
     function getVotersFromCenter(uint _id) external view returns(string memory, uint,address  [] memory) {
