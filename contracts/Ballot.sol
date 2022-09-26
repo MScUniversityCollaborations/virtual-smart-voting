@@ -7,23 +7,180 @@ import "../libraries/Constants.sol";
 
 contract Ballot {
 
-    struct Candidate {
-        uint id;
-        string electionCenterName;
-        uint votes;
-        uint[] votersArray;
-    }
-
     string private welcome;
-    uint private candidateID;
     uint private idVoter;
-    uint randNonce = 0;
+
 
     constructor(){ 
         welcome = "Welcome to smart voting ";
         idVoter = 1000;
-        addVotesToCenter6();
+        setCenters();
+        setCandidate();
     }
+
+    address[] votersCantVote;
+
+    function ballot() public {
+
+        uint randNumber;
+        bool hasVoted;
+        for(uint256 i = 1; i <= 20; i++) {
+
+            address addr2 = addressesCopy[i];
+            randNumber = i % 10;
+
+            uint electionCenter = voterStruct[addr2].electionCenter;
+            hasVoted = voterStruct[addr2].hasVoted;
+            bool isEnrolledInCenter = voterStruct[addr2].isEnrolledInCenter;
+
+            if(isEnrolledInCenter == true){
+              
+                //require(hasVoted == false, "You can't vote!"); 
+                //require(isEnrolledInCenter == true, "You can't vote!");
+                voterStruct[addr2].hasVoted = true;
+
+                if(randNumber == 1 || randNumber == 6) { 
+
+                    candidateStruct[1].votes = candidateStruct[1].votes + 1;
+                
+                    if(electionCenter == 1) { 
+                        candidateStruct[1].votesFromC1 = candidateStruct[1].votesFromC1 + 1;
+                    } else if( electionCenter == 2){
+                        candidateStruct[1].votesFromC2 = candidateStruct[1].votesFromC2 + 1;
+                    } else if( electionCenter == 3){
+                        candidateStruct[1].votesFromC3 = candidateStruct[1].votesFromC3 + 1;
+                    } else if(electionCenter == 4){
+                        candidateStruct[1].votesFromC4 = candidateStruct[1].votesFromC4 + 1;
+                    } else if( electionCenter == 5){
+                        candidateStruct[1].votesFromC5 = candidateStruct[1].votesFromC5 + 1;
+                    } 
+
+                } else if(randNumber == 2 || randNumber == 7){
+
+                    candidateStruct[2].votes = candidateStruct[2].votes + 1;
+                    
+                    if(electionCenter == 1) { 
+                        candidateStruct[2].votesFromC1 = candidateStruct[2].votesFromC1 + 1;
+                    } else if( electionCenter == 2){
+                        candidateStruct[2].votesFromC2 = candidateStruct[2].votesFromC2 + 1;
+                    } else if( electionCenter == 3){
+                        candidateStruct[2].votesFromC3 = candidateStruct[2].votesFromC3 + 1;
+                    } else if(electionCenter == 4 ){
+                        candidateStruct[2].votesFromC4 = candidateStruct[2].votesFromC4 + 1;
+                    } else if( electionCenter == 5){
+                        candidateStruct[2].votesFromC5 = candidateStruct[2].votesFromC5 + 1;
+                    } 
+    
+                } else if(randNumber == 3 || randNumber == 8){
+
+                    candidateStruct[3].votes = candidateStruct[3].votes + 1;
+                    
+                    if(electionCenter == 1) { 
+                        candidateStruct[3].votesFromC1 = candidateStruct[3].votesFromC1 + 1;
+                    } else if( electionCenter == 2){
+                        candidateStruct[3].votesFromC2 = candidateStruct[3].votesFromC2 + 1;
+                    } else if( electionCenter == 3){
+                        candidateStruct[3].votesFromC3 = candidateStruct[3].votesFromC3 + 1;
+                    } else if(electionCenter == 4 ){
+                        candidateStruct[3].votesFromC4 = candidateStruct[3].votesFromC4 + 1;
+                    } else if( electionCenter == 5){
+                        candidateStruct[3].votesFromC5 = candidateStruct[3].votesFromC5 + 1;
+                    } 
+
+                
+                } else if(randNumber == 4 || randNumber == 9 ){
+
+                    candidateStruct[4].votes = candidateStruct[4].votes + 1;
+                    
+                    if(electionCenter == 1) { 
+                        candidateStruct[4].votesFromC1 = candidateStruct[4].votesFromC1 + 1;
+                    } else if( electionCenter == 2){
+                        candidateStruct[4].votesFromC2 = candidateStruct[4].votesFromC2 + 1;
+                    } else if( electionCenter == 3){
+                        candidateStruct[4].votesFromC3 = candidateStruct[4].votesFromC3 + 1;
+                    } else if(electionCenter == 4 ){
+                        candidateStruct[4].votesFromC4 = candidateStruct[4].votesFromC4 + 1;
+                    } else if( electionCenter == 5){
+                        candidateStruct[4].votesFromC5 = candidateStruct[4].votesFromC5 + 1;
+                    } 
+                
+                } else if(randNumber == 5 || randNumber == 0){
+
+                    candidateStruct[5].votes = candidateStruct[5].votes + 1;
+                    
+                    if(electionCenter == 1) { 
+                        candidateStruct[5].votesFromC1 = candidateStruct[5].votesFromC1 + 1;
+                    } else if( electionCenter == 2){
+                        candidateStruct[5].votesFromC2 = candidateStruct[5].votesFromC2 + 1;
+                    } else if( electionCenter == 3){
+                        candidateStruct[5].votesFromC3 = candidateStruct[5].votesFromC3 + 1;
+                    } else if(electionCenter == 4 ){
+                        candidateStruct[5].votesFromC4 = candidateStruct[5].votesFromC4 + 1;
+                    } else if( electionCenter == 5){
+                        candidateStruct[5].votesFromC5 = candidateStruct[5].votesFromC5 + 1;
+                    } 
+                    
+                }
+            }else {
+                votersCantVote.push(addr2);
+            }
+
+        }
+        bool jj =  true;
+        string memory tt = uint2str(candidateStruct[1].votes);
+        require(jj == true, tt); 
+    }
+
+    function ruternVotersCantVote() public view returns(address[] memory){
+       
+        return votersCantVote;
+    }   
+    
+    // Candidate code block
+    struct Candidate {
+        uint id;
+        uint votes;
+        uint votesFromC1;
+        uint votesFromC2;
+        uint votesFromC3;
+        uint votesFromC4;
+        uint votesFromC5;
+        uint[] votersArray;
+    }
+
+    mapping(uint=>Candidate) candidateStruct;
+
+    function getCandidate(uint _id) external view 
+    returns(uint Id, uint votes, 
+        uint votesFromC1,
+        uint votesFromC2,
+        uint votesFromC3,
+        uint votesFromC4,
+        uint votesFromC5){
+
+        return (candidateStruct[_id].id, 
+                candidateStruct[_id].votes,
+                candidateStruct[_id].votesFromC1,
+                candidateStruct[_id].votesFromC2,
+                candidateStruct[_id].votesFromC3,
+                candidateStruct[_id].votesFromC4,
+                candidateStruct[_id].votesFromC5);
+    }
+
+
+    function setCandidate(
+    ) private {
+        for (uint i = 1; i <= 5; i++) {
+                addCandidate(i);
+        }
+    }
+
+    function addCandidate(uint _id) private {
+        candidateStruct[_id].id = _id;
+    }
+
+
+    //------ End code for Candidate ------\\
 
    // Voter code block
     struct Voter { 
@@ -46,11 +203,6 @@ contract Ballot {
 
     address[] votersAddress;
 
-    // // Adds one address to the storage addresses array 
-    // function getAddressFromGanache(address addr) public {
-    //     votersAddress.push(addr);
-    // }
-
     // Replaces the storage addresses with this new array of addresses
     function addAddresses(address[] calldata _addresses) public {
         votersAddress = _addresses;
@@ -63,107 +215,39 @@ contract Ballot {
         return votersAddresses;
     }
 
-    // function ruternVoternsEnrollered() public   
-    // returns(address[] memory){
-    
-    //     address[] memory addressesCopy2 = votersAddress;
-    //     address[] memory addressesTRUEvoters ;
-    //     for(uint256 i = 0; i < addressesCopy2.length; i++) {
-    //             address addr2 = addressesCopy2[i];
-    //             if(voterStruct[addr2].isEnrolledInCenter = true){
-    //                 addressesTRUEvoters[i] = addr2;
-    //             }
-    //     }
-    //     return (addressesTRUEvoters);
-
-    // }
-
+    address[] addressesCopy;
     // Does something on the storage array of addresses
-    function operateOnStorageArrayOfAddresses()  public {
+    function setVotersAndRegister() public {
         // Makes a copy of the storage address in memory to save gas
-        address[] memory addressesCopy = votersAddress;
+        addressesCopy = votersAddress;
         uint randNumber;
-        for(uint256 i = 0; i <= 20; i++) {
+        for(uint256 i = 1; i <= 20; i++) {
 
             idVoter += 1;
             address addr = addressesCopy[i];
-            addVoter(addr, idVoter, 1, true, false);
+            randNumber = i % 10;
+            //addVoter(addr, idVoter, 1, true, false);
 
-            // randNonce++;
-            // randNumber = uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce))) % 100;
-
-            // if( 1 >= randNumber && 20 <= randNumber) { 
-            //      addVoter(addr, idVoter, 1, true, false);
-            // } else if( 21 >= randNumber &&  34 <= randNumber ){
-            //       addVoter(addr, idVoter, 2, true, false);
-            // } else if( 36 >= randNumber &&  47 <= randNumber ){
-            //       addVoter(addr, idVoter, 3, true, false);
-            // } else if( 55 >= randNumber &&  75 <= randNumber ){
-            //        addVoter(addr, idVoter, 4, true, false);
-            // } else if( 78 >= randNumber &&  95 <= randNumber){
-            //       addVoter(addr, idVoter, 5, true, false);
-            // } else {
-            //        addVoter(addr, idVoter, 0, false, false);
-            // } 
+            if(randNumber == 1 || randNumber == 5) { 
+                addVoter(addr, idVoter, 1, true, false);
+                addVotersToCenter(addr, 1);
+            } else if( randNumber == 2 || randNumber == 6){
+                addVoter(addr, idVoter, 2, true, false);
+                addVotersToCenter(addr, 2);
+            } else if( randNumber == 3 || randNumber == 7 ){
+                addVoter(addr, idVoter, 3, true, false);
+                addVotersToCenter(addr, 3);
+            } else if(randNumber == 4 ){
+                addVoter(addr, idVoter, 4, true, false);
+                addVotersToCenter(addr, 4);
+            } else if( randNumber == 5){
+                addVoter(addr, idVoter, 5, true, false);
+                addVotersToCenter(addr, 5);
+            } else {
+                addVoter(addr, idVoter, 0, false, false);
+            } 
         }
     }
-
-    function addVotesToCenter2()  public{
-        // Makes a copy of the storage address in memory to save gas
-        address[] memory addressesCopy = votersAddress;
-        for(uint256 i = 21; i <= 40; i++) {
-            idVoter += 1;
-            address addr = addressesCopy[i];
-            addVoter(addr, idVoter, 2, true, false);
-        }
-    }
-
-
-    function addVotesToCenter3()  public{
-        // Makes a copy of the storage address in memory to save gas
-        address[] memory addressesCopy = votersAddress;
-        for(uint256 i = 41; i <= 60; i++) {
-            idVoter += 1;
-            address addr = addressesCopy[i];
-            addVoter(addr, idVoter, 2, true, false);
-        }
-    }
-
-    function addVotesToCenter4()  public {
-        // Makes a copy of the storage address in memory to save gas
-        address[] memory addressesCopy = votersAddress;
-        for(uint256 i = 61; i <= 70; i++) {
-            idVoter += 1;
-            address addr = addressesCopy[i];
-            addVoter(addr, idVoter, 4, true, false);
-        }
-    }
-
-    function addVotesToCenter5()  public{
-        // Makes a copy of the storage address in memory to save gas
-        address[] memory addressesCopy = votersAddress;
-        for(uint256 i = 71; i <= 80; i++) {
-            idVoter += 1;
-            address addr = addressesCopy[i];
-            addVoter(addr, idVoter, 5, true, false);
-        }
-
-
-    }
-
-     function addVotesToCenter6() internal {
-        // Makes a copy of the storage address in memory to save gas
-        address[] memory addressesCopy = votersAddress;
-        for(uint256 i = 81; i <= 100; i++) {
-            idVoter += 1;
-            address addr = addressesCopy[i];
-            addVoter(addr, idVoter, 0, false, false);
-        }
-
-
-    }
-
-
 
     function getVoter(address _voterAddress) external view 
     returns(uint Id, address Address, uint electionCenter, bool isEnrolledInCenter, bool hasVoted) {
@@ -174,10 +258,12 @@ contract Ballot {
                 voterStruct[_voterAddress].hasVoted );
     }
 
+    //------ End code for Voter ------\\
+
     // Election centers code block
     struct ElectionCenter {
         uint id;
-        string electionCenter;
+        uint electionCenter;
         uint voters;
         address[] votersArray;
     }
@@ -185,7 +271,7 @@ contract Ballot {
     mapping(uint=>ElectionCenter) centerStruct;
 
     function setCenters(
-    ) public {
+    ) private {
         for (uint i = 1; i <= 5; i++) {
                 addCenter(i,0);
         }
@@ -193,11 +279,11 @@ contract Ballot {
 
     function addCenter(uint _id, uint _voters) private {
         centerStruct[_id].id = _id;
-        centerStruct[_id].electionCenter = string.concat("Election Center: ", uint2str(_id));
+        centerStruct[_id].electionCenter = _id;
         centerStruct[_id].voters = _voters;
     }
 
-    function getCenter(uint _id) external view returns(string memory, uint) {
+    function getCenter(uint _id) external view returns(uint, uint) {
         return (centerStruct[_id].electionCenter, 
                 centerStruct[_id].voters);
     }
@@ -208,7 +294,8 @@ contract Ballot {
         centerStruct[_id].votersArray.push(_voterAddress);
     }
 
-    function getVotersFromCenter(uint _id) external view returns(string memory, uint,address  [] memory) {
+    function getVotersFromCenter(uint _id) external view 
+    returns(uint, uint,address  [] memory) {
         return (centerStruct[_id].electionCenter, 
                 centerStruct[_id].voters,
                 centerStruct[_id].votersArray
@@ -269,16 +356,5 @@ contract Ballot {
         return string(bstr);
     }
 
-    // // Initializing the state variable
-    // uint randNonce2 = 0;
-    
-    // // Defining a function to generate a random number
-    // function randMod() public
-    // returns(uint, string memory) {
-    //     // increase nonce
-    //     randNonce2++; 
-    // return (uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp,randNonce2))) % 100, "Hi random number" );
-    // }
-
-//     //------ End code fo Utils ------\\
+    //------ End code for Utils ------\\
 }
