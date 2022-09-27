@@ -24,7 +24,7 @@ contract Ballot {
 
         uint randNumber;
         bool hasVoted;
-        for(uint256 i = 1; i <= 20; i++) {
+        for(uint256 i = 1; i <= 33; i++) {
 
             address addr2 = addressesCopy[i];
             randNumber = i % 10;
@@ -55,7 +55,7 @@ contract Ballot {
                         candidateStruct[1].votesFromC5 = candidateStruct[1].votesFromC5 + 1;
                     } 
 
-                } else if(randNumber == 2 || randNumber == 7){
+                } else if(randNumber == 2){
 
                     candidateStruct[2].votes = candidateStruct[2].votes + 1;
                     
@@ -120,7 +120,38 @@ contract Ballot {
                         candidateStruct[5].votesFromC5 = candidateStruct[5].votesFromC5 + 1;
                     } 
                     
+                } else if(randNumber == 7){
+
+                    candidateStruct[2].votes = candidateStruct[2].votes + 1;
+                    
+                    if(electionCenter == 1) { 
+                        candidateStruct[2].votesFromC1 = candidateStruct[2].votesFromC1 + 1;
+                    } else if( electionCenter == 2){
+                        candidateStruct[2].votesFromC2 = candidateStruct[2].votesFromC2 + 1;
+                    } else if( electionCenter == 3){
+                        candidateStruct[2].votesFromC3 = candidateStruct[2].votesFromC3 + 1;
+                    } else if(electionCenter == 4 ){
+                        candidateStruct[2].votesFromC4 = candidateStruct[2].votesFromC4 + 1;
+                    } else if( electionCenter == 5){
+                        candidateStruct[2].votesFromC5 = candidateStruct[2].votesFromC5 + 1;
+                    } 
+                    
                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }else {
                 votersCantVote.push(addr2);
             }
@@ -221,20 +252,19 @@ contract Ballot {
         // Makes a copy of the storage address in memory to save gas
         addressesCopy = votersAddress;
         uint randNumber;
-        for(uint256 i = 1; i <= 20; i++) {
+        for(uint256 i = 1; i <= 33; i++) {
 
             idVoter += 1;
             address addr = addressesCopy[i];
             randNumber = i % 10;
-            //addVoter(addr, idVoter, 1, true, false);
-
-            if(randNumber == 1 || randNumber == 5) { 
+           
+            if(randNumber == 1) { 
                 addVoter(addr, idVoter, 1, true, false);
                 addVotersToCenter(addr, 1);
-            } else if( randNumber == 2 || randNumber == 6){
+            } else if( randNumber == 2 || randNumber == 9 || randNumber == 0){
                 addVoter(addr, idVoter, 2, true, false);
                 addVotersToCenter(addr, 2);
-            } else if( randNumber == 3 || randNumber == 7 ){
+            } else if( randNumber == 3  ){
                 addVoter(addr, idVoter, 3, true, false);
                 addVotersToCenter(addr, 3);
             } else if(randNumber == 4 ){
@@ -243,6 +273,15 @@ contract Ballot {
             } else if( randNumber == 5){
                 addVoter(addr, idVoter, 5, true, false);
                 addVotersToCenter(addr, 5);
+            } else if( randNumber == 6){
+                addVoter(addr, idVoter, 6, true, false);
+                addVotersToCenter(addr, 6);
+            } else if( randNumber == 7){
+                addVoter(addr, idVoter, 7, true, false);
+                addVotersToCenter(addr, 7);
+            } else if( randNumber == 8){
+                addVoter(addr, idVoter, 8, true, false);
+                addVotersToCenter(addr, 8);
             } else {
                 addVoter(addr, idVoter, 0, false, false);
             } 
@@ -272,7 +311,7 @@ contract Ballot {
 
     function setCenters(
     ) private {
-        for (uint i = 1; i <= 5; i++) {
+        for (uint i = 1; i <= 10; i++) {
                 addCenter(i,0);
         }
     }
