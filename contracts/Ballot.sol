@@ -20,6 +20,97 @@ contract Ballot {
 
     address[] votersCantVote;
 
+    function getResults() public view returns (
+        uint, uint, uint, uint, uint){
+
+        return (candidateStruct[1].votes,
+                candidateStruct[2].votes, 
+                candidateStruct[3].votes, 
+                candidateStruct[4].votes,
+                candidateStruct[5].votes);
+    }
+
+    function getResultsC1() public view returns (
+        uint, uint, uint, uint, uint, uint, uint, 
+        uint, uint, uint, uint){
+
+        return (candidateStruct[1].votes,
+                candidateStruct[1].votesFromC1,
+                candidateStruct[1].votesFromC2,
+                candidateStruct[1].votesFromC3,
+                candidateStruct[1].votesFromC4,
+                candidateStruct[1].votesFromC5,
+                candidateStruct[1].votesFromC6,
+                candidateStruct[1].votesFromC7,
+                candidateStruct[1].votesFromC8,
+                candidateStruct[1].votesFromC9,
+                candidateStruct[1].votesFromC10);
+    }
+
+    function getResultsC2() public view returns (
+        uint, uint, uint, uint, uint, uint, uint, uint, uint, uint, uint){
+
+        return (candidateStruct[2].votes,
+                candidateStruct[2].votesFromC1,
+                candidateStruct[2].votesFromC2,
+                candidateStruct[2].votesFromC3,
+                candidateStruct[2].votesFromC4,
+                candidateStruct[2].votesFromC5,
+                candidateStruct[2].votesFromC6,
+                candidateStruct[2].votesFromC7,
+                candidateStruct[2].votesFromC8,
+                candidateStruct[2].votesFromC9,
+                candidateStruct[2].votesFromC10);
+    }
+
+    function getResultsC3() public view returns (
+        uint, uint, uint, uint, uint, uint, uint, uint, uint, uint, uint){
+
+        return (candidateStruct[3].votes,
+                candidateStruct[3].votesFromC1,
+                candidateStruct[3].votesFromC2,
+                candidateStruct[3].votesFromC3,
+                candidateStruct[3].votesFromC4,
+                candidateStruct[3].votesFromC5,
+                candidateStruct[3].votesFromC6,
+                candidateStruct[3].votesFromC7,
+                candidateStruct[3].votesFromC8,
+                candidateStruct[3].votesFromC9,
+                candidateStruct[3].votesFromC10);
+    }
+
+    function getResultsC4() public view returns (
+        uint, uint, uint, uint, uint, uint, uint, uint, uint, uint, uint){
+
+        return (candidateStruct[4].votes,
+                candidateStruct[4].votesFromC1,
+                candidateStruct[4].votesFromC2,
+                candidateStruct[4].votesFromC3,
+                candidateStruct[4].votesFromC4,
+                candidateStruct[4].votesFromC5,
+                candidateStruct[4].votesFromC6,
+                candidateStruct[4].votesFromC7,
+                candidateStruct[4].votesFromC8,
+                candidateStruct[4].votesFromC9,
+                candidateStruct[4].votesFromC10);
+    }
+
+    function getResultsC5() public view returns (
+        uint, uint, uint, uint, uint, uint, uint, uint, uint, uint, uint){
+
+        return (candidateStruct[5].votes,
+                candidateStruct[5].votesFromC1,
+                candidateStruct[5].votesFromC2,
+                candidateStruct[5].votesFromC3,
+                candidateStruct[5].votesFromC4,
+                candidateStruct[5].votesFromC5,
+                candidateStruct[5].votesFromC6,
+                candidateStruct[5].votesFromC7,
+                candidateStruct[5].votesFromC8,
+                candidateStruct[5].votesFromC9,
+                candidateStruct[5].votesFromC10);
+    }
+
     function ballot() public {
 
         uint randNumber;
@@ -35,57 +126,71 @@ contract Ballot {
 
             if(isEnrolledInCenter == true){
               
-                //require(hasVoted == false, "You can't vote!"); 
-                //require(isEnrolledInCenter == true, "You can't vote!");
-                voterStruct[addr2].hasVoted = true;
-
-                if(randNumber == 1 || randNumber == 6) { 
+                if(randNumber == 1 ) { 
 
                     candidateStruct[1].votes = candidateStruct[1].votes + 1;
                 
                     if(electionCenter == 1) { 
-                        candidateStruct[1].votesFromC1 = candidateStruct[1].votesFromC1 + 1;
+                        candidateStruct[1].votesFromC1 += 1; 
                     } else if( electionCenter == 2){
-                        candidateStruct[1].votesFromC2 = candidateStruct[1].votesFromC2 + 1;
+                        candidateStruct[1].votesFromC2 += 1; 
                     } else if( electionCenter == 3){
-                        candidateStruct[1].votesFromC3 = candidateStruct[1].votesFromC3 + 1;
+                        candidateStruct[1].votesFromC3 += 1; 
                     } else if(electionCenter == 4){
-                        candidateStruct[1].votesFromC4 = candidateStruct[1].votesFromC4 + 1;
+                        candidateStruct[1].votesFromC4 += 1; 
                     } else if( electionCenter == 5){
-                        candidateStruct[1].votesFromC5 = candidateStruct[1].votesFromC5 + 1;
-                    } 
+                        candidateStruct[1].votesFromC5 += 1; 
+                    } else if( electionCenter == 6){
+                        candidateStruct[1].votesFromC6 += 1; 
+                    }else if( electionCenter == 7){
+                        candidateStruct[1].votesFromC7 += 1; 
+                    }else if( electionCenter == 8){
+                        candidateStruct[1].votesFromC8 += 1; 
+                    }
 
-                } else if(randNumber == 2){
+                } else if(randNumber == 2 || randNumber == 6 || randNumber == 7){
 
                     candidateStruct[2].votes = candidateStruct[2].votes + 1;
                     
                     if(electionCenter == 1) { 
-                        candidateStruct[2].votesFromC1 = candidateStruct[2].votesFromC1 + 1;
+                        candidateStruct[2].votesFromC1 += 1; 
                     } else if( electionCenter == 2){
-                        candidateStruct[2].votesFromC2 = candidateStruct[2].votesFromC2 + 1;
+                        candidateStruct[2].votesFromC2 += 1; 
                     } else if( electionCenter == 3){
-                        candidateStruct[2].votesFromC3 = candidateStruct[2].votesFromC3 + 1;
+                        candidateStruct[2].votesFromC3 += 1; 
                     } else if(electionCenter == 4 ){
-                        candidateStruct[2].votesFromC4 = candidateStruct[2].votesFromC4 + 1;
+                        candidateStruct[2].votesFromC4 += 1; 
                     } else if( electionCenter == 5){
-                        candidateStruct[2].votesFromC5 = candidateStruct[2].votesFromC5 + 1;
-                    } 
+                        candidateStruct[2].votesFromC5 += 1;
+                    } else if( electionCenter == 6){
+                        candidateStruct[2].votesFromC6 += 1; 
+                    }else if( electionCenter == 7){
+                        candidateStruct[2].votesFromC7 += 1; 
+                    }else if( electionCenter == 8){
+                        candidateStruct[2].votesFromC8 += 1;
+                    }
     
                 } else if(randNumber == 3 || randNumber == 8){
 
                     candidateStruct[3].votes = candidateStruct[3].votes + 1;
                     
                     if(electionCenter == 1) { 
-                        candidateStruct[3].votesFromC1 = candidateStruct[3].votesFromC1 + 1;
+                        candidateStruct[3].votesFromC1 += 1; 
                     } else if( electionCenter == 2){
-                        candidateStruct[3].votesFromC2 = candidateStruct[3].votesFromC2 + 1;
+                        candidateStruct[3].votesFromC2 += 1; 
                     } else if( electionCenter == 3){
-                        candidateStruct[3].votesFromC3 = candidateStruct[3].votesFromC3 + 1;
+                        candidateStruct[3].votesFromC3 += 1;
                     } else if(electionCenter == 4 ){
-                        candidateStruct[3].votesFromC4 = candidateStruct[3].votesFromC4 + 1;
+                        candidateStruct[3].votesFromC4 += 1;
                     } else if( electionCenter == 5){
-                        candidateStruct[3].votesFromC5 = candidateStruct[3].votesFromC5 + 1;
-                    } 
+                        candidateStruct[3].votesFromC5 += 1;
+                    } else if( electionCenter == 6){
+                        candidateStruct[3].votesFromC6 += 1;
+                    }else if( electionCenter == 7){
+                        candidateStruct[3].votesFromC7 += 1;
+                    }else if( electionCenter == 8){
+                        candidateStruct[3].votesFromC8 += 1;
+                    }
 
                 
                 } else if(randNumber == 4 || randNumber == 9 ){
@@ -93,73 +198,50 @@ contract Ballot {
                     candidateStruct[4].votes = candidateStruct[4].votes + 1;
                     
                     if(electionCenter == 1) { 
-                        candidateStruct[4].votesFromC1 = candidateStruct[4].votesFromC1 + 1;
+                        candidateStruct[4].votesFromC1 += 1;
                     } else if( electionCenter == 2){
-                        candidateStruct[4].votesFromC2 = candidateStruct[4].votesFromC2 + 1;
+                        candidateStruct[4].votesFromC2 += 1;
                     } else if( electionCenter == 3){
-                        candidateStruct[4].votesFromC3 = candidateStruct[4].votesFromC3 + 1;
+                        candidateStruct[4].votesFromC3 += 1;
                     } else if(electionCenter == 4 ){
-                        candidateStruct[4].votesFromC4 = candidateStruct[4].votesFromC4 + 1;
+                        candidateStruct[4].votesFromC4 += 1;
                     } else if( electionCenter == 5){
-                        candidateStruct[4].votesFromC5 = candidateStruct[4].votesFromC5 + 1;
-                    } 
+                        candidateStruct[4].votesFromC5 += 1; 
+                    } else if( electionCenter == 6){
+                        candidateStruct[4].votesFromC6 += 1; 
+                    }else if( electionCenter == 7){
+                        candidateStruct[4].votesFromC7 += 1; 
+                    }else if( electionCenter == 8){
+                        candidateStruct[4].votesFromC8 += 1; 
+                    }
                 
                 } else if(randNumber == 5 || randNumber == 0){
 
                     candidateStruct[5].votes = candidateStruct[5].votes + 1;
                     
                     if(electionCenter == 1) { 
-                        candidateStruct[5].votesFromC1 = candidateStruct[5].votesFromC1 + 1;
+                        candidateStruct[5].votesFromC1 += 1; 
                     } else if( electionCenter == 2){
-                        candidateStruct[5].votesFromC2 = candidateStruct[5].votesFromC2 + 1;
+                        candidateStruct[5].votesFromC2 += 1;
                     } else if( electionCenter == 3){
-                        candidateStruct[5].votesFromC3 = candidateStruct[5].votesFromC3 + 1;
+                        candidateStruct[5].votesFromC3 += 1;
                     } else if(electionCenter == 4 ){
-                        candidateStruct[5].votesFromC4 = candidateStruct[5].votesFromC4 + 1;
+                        candidateStruct[5].votesFromC4 += 1; 
                     } else if( electionCenter == 5){
-                        candidateStruct[5].votesFromC5 = candidateStruct[5].votesFromC5 + 1;
-                    } 
-                    
-                } else if(randNumber == 7){
-
-                    candidateStruct[2].votes = candidateStruct[2].votes + 1;
-                    
-                    if(electionCenter == 1) { 
-                        candidateStruct[2].votesFromC1 = candidateStruct[2].votesFromC1 + 1;
-                    } else if( electionCenter == 2){
-                        candidateStruct[2].votesFromC2 = candidateStruct[2].votesFromC2 + 1;
-                    } else if( electionCenter == 3){
-                        candidateStruct[2].votesFromC3 = candidateStruct[2].votesFromC3 + 1;
-                    } else if(electionCenter == 4 ){
-                        candidateStruct[2].votesFromC4 = candidateStruct[2].votesFromC4 + 1;
-                    } else if( electionCenter == 5){
-                        candidateStruct[2].votesFromC5 = candidateStruct[2].votesFromC5 + 1;
-                    } 
-                    
+                        candidateStruct[5].votesFromC5 += 1; 
+                    } else if( electionCenter == 6){
+                        candidateStruct[5].votesFromC6 += 1;
+                    }else if( electionCenter == 7){
+                        candidateStruct[5].votesFromC7 += 1; 
+                    }else if( electionCenter == 8){
+                        candidateStruct[5].votesFromC8 += 1;
+                    }    
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             }else {
                 votersCantVote.push(addr2);
             }
-
         }
-        bool jj =  true;
-        string memory tt = uint2str(candidateStruct[1].votes);
-        require(jj == true, tt); 
     }
 
     function ruternVotersCantVote() public view returns(address[] memory){
@@ -176,6 +258,11 @@ contract Ballot {
         uint votesFromC3;
         uint votesFromC4;
         uint votesFromC5;
+        uint votesFromC6;
+        uint votesFromC7;
+        uint votesFromC8;
+        uint votesFromC9;
+        uint votesFromC10;
         uint[] votersArray;
     }
 
@@ -327,7 +414,7 @@ contract Ballot {
                 centerStruct[_id].voters);
     }
 
-    function addVotersToCenter(address _voterAddress, uint _id) private{
+    function addVotersToCenter(address _voterAddress, uint _id) private {
         centerStruct[_id].id = _id;
         centerStruct[_id].voters = centerStruct[_id].voters + 1;
         centerStruct[_id].votersArray.push(_voterAddress);
