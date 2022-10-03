@@ -16,14 +16,24 @@ contract Ballot {
         idVoter = 1000;
         setCenters();
         setCandidate();
+        //setVotersAndRegister();
     }
 
     address[] votersCantVote;
 
     function getResults() public view returns (
-        uint, uint, uint, uint, uint){
+        uint, uint, uint, uint, uint, uint){
+        uint256 maxNumber;
+        uint256 winner;    
+        for (uint256 i = 0; i < 5; i++) {
+        if (candidateStruct[i].votes > maxNumber) {
+                maxNumber = candidateStruct[i].votes;
+                winner = i;
+            }
+        }
 
-        return (candidateStruct[1].votes,
+        return (winner,
+                candidateStruct[1].votes,
                 candidateStruct[2].votes, 
                 candidateStruct[3].votes, 
                 candidateStruct[4].votes,
@@ -112,6 +122,8 @@ contract Ballot {
     }
 
     function ballot() public {
+
+        setVotersAndRegister();
 
         uint randNumber;
         bool hasVoted;
@@ -268,7 +280,7 @@ contract Ballot {
 
     mapping(uint=>Candidate) candidateStruct;
 
-    function getCandidate(uint _id) external view 
+    function getCandidate(uint _id) private view 
     returns(uint Id, uint votes, 
         uint votesFromC1,
         uint votesFromC2,
@@ -375,7 +387,7 @@ contract Ballot {
         }
     }
 
-    function getVoter(address _voterAddress) external view 
+    function getVoter(address _voterAddress) private view 
     returns(uint Id, address Address, uint electionCenter, bool isEnrolledInCenter, bool hasVoted) {
         return (voterStruct[_voterAddress].id, 
                 voterStruct[_voterAddress].voterAddress,
@@ -409,7 +421,7 @@ contract Ballot {
         centerStruct[_id].voters = _voters;
     }
 
-    function getCenter(uint _id) external view returns(uint, uint) {
+    function getCenter(uint _id) private view returns(uint, uint) {
         return (centerStruct[_id].electionCenter, 
                 centerStruct[_id].voters);
     }
@@ -420,7 +432,7 @@ contract Ballot {
         centerStruct[_id].votersArray.push(_voterAddress);
     }
 
-    function getVotersFromCenter(uint _id) external view 
+    function getVotersFromCenter(uint _id) private view 
     returns(uint, uint,address  [] memory) {
         return (centerStruct[_id].electionCenter, 
                 centerStruct[_id].voters,
