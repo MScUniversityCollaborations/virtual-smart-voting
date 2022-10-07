@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Smart Voting</title>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <!-- UI --> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="../node_modules/web3/dist/web3.min.js"></script>
+  </head>
+
+  <body>
+
+    <div class="jumbotron text-center">
+      <h1>Smart Voting</h1>
+      <p>Blockchain Technologies and Smart Contract</p> 
+    </div>
+
+    <div class="container">
+      <h2 id="voting"></h2>
+
+      <div class="row">
+        <div class="col-md-4">
+          <h3>Centers</h3>
+          <ul id="centers" class="left"></ul>
+        </div>
+        <div class="col-md-4">
+          <h3>Candidates</h3>
+          <ul id="candidates"></ul>
+        </div>
+    </div>
+
+    <div class="container">
+      <br><br>
+      <button id="btn_view_results" class="btn-lg pull-left">View / Hide Results</button>
+      <button id="btn_voter_registration" class="btn-lg pull-right">Voter Registration</button>
+      <button id="btn_start_voting" class="btn-lg pull-right" style="visibility: hidden;">Start Voting</button>
+      <br><br>
+    </div>
+
+    <div id="results" style="visibility: hidden;" class="container" >
+      <h2>Results</h2>
+
+      <div class="jumbotron text-center">
+        <h2>Winner</h2>
+        <h3 id="winner"></h3>
+        <br><br>
+        <h4 id="number_of_votes"></h4>
+        <h4 id="number_of_voter_cant_vote"></h4>
+        <h4> Voters:</h4>
+        <ol id="voter_cant_vote"></ol>
+      </div>
+
+      <h3>The total number of votes per candidate</h3>
+
+      <div class="row">
+        <div class="col-md-2">
+          <h4>Candidate 1</h4>
+          <p id="cand1" class="left"></p>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 2</h4>
+          <p id="cand2"></p>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 3</h4>
+          <p id="cand3" class="left"></p>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 4</h4>
+          <p id="cand4"></p>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 5</h4>
+          <p id="cand5" class="left"></p>
+        </div>
+      </div>
+
+      <h3>The total number of votes per candidate and per polling station</h3>
+
+      <div class="row">
+        <div class="col-md-2">
+          <h4>Candidate 1</h4>
+          <ul id="candidate1" class="left"></ul>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 2</h4>
+          <ul id="candidate2"></ul>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 3</h4>
+          <ul id="candidate3" class="left"></ul>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 4</h4>
+          <ul id="candidate4"></ul>
+        </div>
+        <div class="col-md-2">
+          <h4>Candidate 5</h4 >
+          <ul id="candidate5" class="left"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script scr="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="../javascript/constants.js"></script>
+    <script type="text/javascript" src="../javascript/connection.js"></script>
+
+    <script>
+
+      smartVotingContract.methods.getWelcomeString().call(function (error, result){
+        // Display Welcome String
+        if(!error){
+          $("#voting").html(result);
+          console.log(result)
+        }else
+          console.error(error);
+      });
+
+      smartVotingContract.methods.getCenters().call(function (error,center){
+        // Display Centers
+        if (!error){
+            for(i = 0; i <= 9; i++){
+              var newElement = document.createElement("li");
+              var newNode = document.createTextNode(center[i]);
+              newElement.appendChild(newNode);
+              document.getElementById("centers").appendChild(newElement);
+            }
+        }else 
+          console.error(error)
+      });
+
+      smartVotingContract.methods.getCandidates().call(function (error,candidate){
+        // Display Candidates
+        if (!error){
+          for(i = 0; i <= 4; i++){
+              var newElement = document.createElement("li");
+              var newNode = document.createTextNode(candidate[i]);
+              newElement.appendChild(newNode);
+              document.getElementById("candidates").appendChild(newElement);
+            }
+        }else 
+          console.error(error)
+      });
+
+      async function register(){
+
+        await smartVotingContract.methods.setVotersAndRegister().send(function (error){
+        if (!error) {
+          console.log("Success")
+          document.getElementById('btn_start_voting').style.visibility = 'visible';
+          document.getElementById('btn_voter_registration').style.visibility = 'hidden';
+        }else 
+          alert("Voters are already registered. The vote was taken!");
+          console.error(error)
+        });
+      }
+
+      async function bllt(){
+
+        await smartVotingContract.methods.ballot().send(function (error){
+          if (!error) {
+            console.log("success")
+            document.getElementById('btn_voter_registration').style.display="none";
+            document.getElementById('btn_start_voting').style.display="none";
+            document.getElementById('results').style.visibility = 'visible';
+            viewResults()
+          }else console.error(error)
+        });
+      }
+
+      // Buttons
+      $("#btn_start_voting").click(function(){
+        console.log("btn_pushed")
+        bllt()
+      });
+
+      $("#btn_voter_registration").click(function(){
+        console.log("btn_pushed")
+        register()
+      });
+
+      var view = false;
+      $("#btn_view_results").click(function(){
+        console.log("btn_pushed")
+        if(!view){
+          view = true;
+          document.getElementById('results').style.visibility = 'visible';
+        }else if (view){
+          view = false;
+          document.getElementById('results').style.visibility = 'hidden';
+        }
+        viewResults()
+      });
+
+      var view0, view1, view2, view3, view4, view5 = false;
+
+      async function viewResults(){
+
+          smartVotingContract.methods.ruternVotersCantVote().call(function (error,votes){
+
+          if (!error){
+
+            $("#number_of_votes").html("They have voted: " + votes[0] );
+            $("#number_of_voter_cant_vote").html("They couldn't vote: " + votes[1] );
+          
+            if(!view0){
+              view0 = true
+              for(i = 0; i < votes[1]; ++i){
+                var newElement = document.createElement("li");
+                var newNode = document.createTextNode(votes[2][i]);
+                newElement.appendChild(newNode);
+                document.getElementById("voter_cant_vote").appendChild(newElement);
+              }
+            }
+          }else console.error(error)
+        });
+
+        smartVotingContract.methods.getResults().call(function (error,votes){
+          if (!error) {
+            $("#winner").html("Candidate: " + votes[0] );
+            $("#cand1").html("Total votes: " + votes[1] );
+            $("#cand2").html("Total votes: " + votes[2] );
+            $("#cand3").html("Total votes: " + votes[3] );
+            $("#cand4").html("Total votes: " + votes[4] );
+            $("#cand5").html("Total votes: " + votes[5] );
+          }else console.error(error)
+        });
+
+        smartVotingContract.methods.getResultsC1().call(function (error,votes){
+          if (!error) {
+            if(!view1){
+              view1 = true
+              for(i = 0; i <= 10; ++i){
+                var newElement = document.createElement("li");
+                var newNode = document.createTextNode("Center " + [i] + ": "+ votes[i]);
+                if(i == 0){newNode = document.createTextNode("Total votes" + ": "+ votes[i]);}
+                newElement.appendChild(newNode);
+                document.getElementById("candidate1").appendChild(newElement);
+              }
+            }
+          }else console.error(error)
+        });
+
+        smartVotingContract.methods.getResultsC2().call(function (error,votes){
+          if (!error) {
+            if(!view2){
+              view2 = true
+              for(i = 0; i <= 10; ++i){
+                var newElement = document.createElement("li");
+                var newNode = document.createTextNode("Center " + [i] + ": "+ votes[i]);
+                if(i == 0){newNode = document.createTextNode("Total votes" + ": "+ votes[i]);}
+                newElement.appendChild(newNode);
+                document.getElementById("candidate2").appendChild(newElement);
+              }
+            }
+          }else console.error(error)
+        });
+
+        smartVotingContract.methods.getResultsC3().call(function (error,votes){
+          if (!error) {
+            if(!view3){
+              view3 = true
+              for(i = 0; i <= 10; ++i){
+                var newElement = document.createElement("li");
+                var newNode = document.createTextNode("Center " + [i] + ": "+ votes[i]);
+                if(i == 0){newNode = document.createTextNode("Total votes" + ": "+ votes[i]);}
+                newElement.appendChild(newNode);
+                document.getElementById("candidate3").appendChild(newElement);
+              }
+            }
+          }else console.error(error)
+        });
+
+        smartVotingContract.methods.getResultsC4().call(function (error,votes){
+          if (!error) {
+            if(!view4){
+              view4 = true
+              for(i = 0; i <= 10; ++i){
+                var newElement = document.createElement("li");
+                var newNode = document.createTextNode("Center " + [i] + ": "+ votes[i]);
+                if(i == 0){newNode = document.createTextNode("Total votes" + ": "+ votes[i]);}
+                newElement.appendChild(newNode);
+                document.getElementById("candidate4").appendChild(newElement);
+              }
+            }
+          }else console.error(error)
+        });
+
+        smartVotingContract.methods.getResultsC5().call(function (error,votes){
+          if (!error) {
+            if(!view5){
+              view5 = true
+              for(i = 0; i <= 10; ++i){
+                var newElement = document.createElement("li");
+                var newNode = document.createTextNode("Center " + [i] + ": "+ votes[i]);
+                if(i == 0){newNode = document.createTextNode("Total votes" + ": "+ votes[i]);}
+                newElement.appendChild(newNode);
+                document.getElementById("candidate5").appendChild(newElement);
+              }
+            }
+          }else console.error(error)
+        });
+      }
+
+      async function sendAndGetAddresses() {
+        
+        const addresses = await web3.eth.getAccounts();
+        await smartVotingContract.methods.addAddresses(addresses).send();
+      }
+      
+      sendAndGetAddresses();
+
+    </script>
+
+    <hr>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="col-md-4">
+          <h4>Info</h4>
+          <dl>
+            <dt>Zartilas Vasileios</dt>
+            <dd>- MPSP21015</dd>
+            <dd>- vzartilas@pm.me</dd>
+            <dt>Pateras Nikolas</dt>
+            <dd>- MPSP21043</dd>
+            <dd>- npateras@outlook.com</dd>
+          </dl>
+        </div>
+        <div class="col-md-4">
+          <h4>Links</h4>
+          <a href = "https://github.com/TORPILES/virtual-smart-voting">GitHub Repo</a>
+        </div> 
+        <div class="col-md-4">
+          <h4>Copyleft</h4>
+          <span>© Torpiles <script>document.write(new Date().getFullYear()) </script> </span>
+        </div>  
+      </div>
+    </footer>
+  </body>
+</html>
